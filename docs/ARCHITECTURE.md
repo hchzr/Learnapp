@@ -22,8 +22,9 @@ FastAPI was chosen for fast iteration, typed request/response contracts, and sim
 
 ## Guardrails Included
 
-- Request logging middleware with per-request `request_id`.
-- Header redaction for sensitive key names (`token`, `authorization`, `cookie`).
+- Request logging middleware that propagates `x-request-id` into request context and response headers.
+- Structured JSON logs across API and worker processes (including `request_id` and worker `run_id`).
+- Redaction pipeline for sensitive key/value patterns (`token`, `authorization`, `cookie`, `secret`, `password`, API keys).
 - Environment-driven CORS behavior (development permissive, non-development restricted).
 - CI checks for lint, type-checking, and tests across web + python services.
 

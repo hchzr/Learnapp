@@ -55,3 +55,16 @@ cd apps/api && pytest tests/test_db_persistence.py
 - **Port already in use:** stop conflicting process or change port.
 - **Redis connection errors:** ensure `docker compose ps` reports redis healthy.
 - **DB migration checks:** `cd apps/api && alembic upgrade head`.
+
+## 8) Logging and tracing checks
+
+```bash
+cd apps/api && python -m pytest -q tests/test_health.py tests/test_logging.py tests/test_logging_utils.py
+cd apps/workers && python -m pytest -q tests/test_tasks.py tests/test_logging.py
+```
+
+Expected behavior:
+- API logs are JSON lines and include `request_id` for every request lifecycle event.
+- Worker task logs include a per-run `run_id`.
+- Sensitive values (tokens/authorization/cookies/secrets/passwords/api keys) are redacted from logs.
+
