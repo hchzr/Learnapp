@@ -26,3 +26,9 @@
 - **Decision:** Establish PostgreSQL + Alembic as the canonical persistence layer with SQLAlchemy async sessions.
 - **Decision:** Store external provider tokens encrypted at rest using a shared `ENCRYPTION_KEY`-derived Fernet key.
 - **Tradeoff:** App-level encryption keeps implementation simple and portable, but key rotation will require a migration plan.
+
+## ADR-006: Shared OpenAPI-aligned API contracts for web clients
+
+- **Decision:** Define canonical API payload schemas in `packages/shared` as shared TypeScript contracts and add runtime type guards for boundary validation.
+- **Decision:** Use a typed fetch client in `apps/web` that validates success/error payloads at runtime and throws a single `ApiClientError` wrapper.
+- **Tradeoff:** Adds a small amount of validation code in the shared package, but materially reduces silent schema drift between frontend and backend.

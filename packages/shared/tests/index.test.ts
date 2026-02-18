@@ -1,14 +1,30 @@
 import { describe, expect, it } from "vitest";
-import type { ApiError, HealthResponse } from "../src";
+import { isApiError, isHealthResponse, type ApiPaths } from "../src";
 
-describe("shared types", () => {
-  it("supports health response shape", () => {
-    const response: HealthResponse = { status: "ok" };
-    expect(response.status).toBe("ok");
+describe("shared api contract", () => {
+  it("validates the health response shape", () => {
+    expect(isHealthResponse({ status: "ok" })).toBe(true);
+    expect(isHealthResponse({ status: "bad" })).toBe(false);
   });
 
-  it("supports api error shape", () => {
-    const error: ApiError = { error: { code: "UNAUTHORIZED", message: "Missing auth" } };
-    expect(error.error.code).toBe("UNAUTHORIZED");
+  it("validates api error payloads", () => {
+    expect(
+      isApiError({
+        error: {
+          code: "UNAUTHORIZED",
+          message: "Missing auth"
+        }
+      })
+    ).toBe(true);
+
+    expect(isApiError({ error: { code: 401 } })).toBe(false);
+  });
+
+  it("defines canonical endpoint contracts", () => {
+    const healthPath: keyof ApiPaths = "/v1/health";
+    const mePath: keyof ApiPaths = "/v1/me";
+
+    expect(healthPath).toBe("/v1/health");
+    expect(mePath).toBe("/v1/me");
   });
 });

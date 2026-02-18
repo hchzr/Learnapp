@@ -33,3 +33,10 @@ FastAPI was chosen for fast iteration, typed request/response contracts, and sim
 - Canonical schema includes `users`, `external_accounts`, and `audit_logs` managed through Alembic migrations.
 - `external_accounts` tokens are encrypted at rest via an application-level SQLAlchemy type backed by `ENCRYPTION_KEY`.
 - Health endpoints validate database connectivity via `SELECT 1` before returning `{"status": "ok"}`.
+
+
+## Shared API Contract (PR #8)
+
+- `packages/shared` now exposes OpenAPI-aligned TypeScript contracts plus runtime type guards (`isHealthResponse`, `isApiError`) for API payload validation.
+- `apps/web/lib/api-client.ts` uses those shared guards directly to validate responses from the API boundary and prevent frontend/backend schema drift.
+- API failures are normalized into a single `ApiClientError` wrapper carrying `status`, `endpoint`, and optional parsed API error payload.
