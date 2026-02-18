@@ -33,3 +33,10 @@ FastAPI was chosen for fast iteration, typed request/response contracts, and sim
 - Canonical schema includes `users`, `external_accounts`, and `audit_logs` managed through Alembic migrations.
 - `external_accounts` tokens are encrypted at rest via an application-level SQLAlchemy type backed by `ENCRYPTION_KEY`.
 - Health endpoints validate database connectivity via `SELECT 1` before returning `{"status": "ok"}`.
+
+## Feature Flags (PR #7)
+
+- API stores runtime feature toggles in PostgreSQL table `feature_flags`.
+- Supported flags: `notion_sync`, `todoist_sync`, `drive_ingestion`, `anki`, `exercises`, `planner`.
+- API exposes read endpoints at `/v1/feature-flags` and `/v1/feature-flags/{name}`, plus admin toggle endpoint `PATCH /v1/admin/feature-flags/{name}`.
+- Frontend fetches flags from the API and hides disabled modules from sidebar navigation and integrations UI.
