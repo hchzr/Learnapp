@@ -26,3 +26,10 @@
 - **Decision:** Establish PostgreSQL + Alembic as the canonical persistence layer with SQLAlchemy async sessions.
 - **Decision:** Store external provider tokens encrypted at rest using a shared `ENCRYPTION_KEY`-derived Fernet key.
 - **Tradeoff:** App-level encryption keeps implementation simple and portable, but key rotation will require a migration plan.
+
+## ADR-006: Shared UI system baseline
+
+- **Decision:** Establish a shadcn/ui-based component baseline in `apps/web` with shared typography, spacing conventions, card structure, skeleton loading, and error alerts.
+- **Decision:** Require route placeholders to render through a shared `PageShell` so new pages inherit consistent visual language by default.
+- **Tradeoff:** Slight upfront abstraction cost, but substantially lower UI drift and faster feature-page delivery.
+
