@@ -1,12 +1,18 @@
 import logging
 import uuid
+from collections.abc import Awaitable, Callable
 
-from fastapi import Depends, FastAPI, Request
+from fastapi import Depends, FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.db import check_database_connectivity
-from app.logging_utils import RequestLoggerAdapter, sanitize_headers, setup_logging
+from app.logging_utils import (
+    RequestLoggerAdapter,
+    request_id_context,
+    sanitize_headers,
+    setup_logging,
+)
 from app.settings import get_settings
 
 setup_logging()
@@ -33,8 +39,13 @@ else:
 
 
 @app.middleware("http")
-async def request_logging_middleware(request: Request, call_next):
+async def request_logging_middleware(
+    request: Request,
+    call_next: Callable[[Request], Awaitable[Response]],
+) -> Response:
     request_id = request.headers.get("x-request-id", str(uuid.uuid4()))
+    request.state.request_id = request_id
+    token = request_id_context.set(request_id)
     logger = RequestLoggerAdapter(logging.getLogger("api.request"), {"request_id": request_id})
     logger.info(
         "request-start method=%s path=%s headers=%s",
@@ -43,7 +54,10 @@ async def request_logging_middleware(request: Request, call_next):
         sanitize_headers(dict(request.headers)),
     )
 
-    response = await call_next(request)
+    try:
+        response = await call_next(request)
+    finally:
+        request_id_context.reset(token)
     response.headers["x-request-id"] = request_id
     logger.info("request-end status_code=%s", response.status_code)
     return response
