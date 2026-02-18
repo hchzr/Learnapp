@@ -1,22 +1,28 @@
-# Learnapp Monorepo Architecture
+# Architecture Overview
 
-## Repository layout
+## Monorepo Layout
 
-- `apps/web`: Next.js 15 + TypeScript frontend.
-- `apps/api`: FastAPI backend service.
-- `apps/workers`: TypeScript background workers.
-- `packages/shared`: Shared TypeScript utilities used by web/workers.
-- `docs/`: Architecture and engineering decision records.
+- `apps/web`: Next.js App Router frontend (TypeScript, Tailwind, shadcn-style UI primitives).
+- `apps/api`: FastAPI service for REST endpoints, settings, middleware, and migrations.
+- `apps/workers`: Celery workers for background jobs.
+- `packages/shared`: shared TypeScript types (API contracts).
+- `packages/prompts`: versioned prompt templates placeholder.
+- `infra/docker`: infrastructure assets and Docker-related scaffolding.
 
-## High-level flow
+## Runtime Components
 
-1. Browser requests are served by `apps/web`.
-2. Frontend calls backend endpoints from `apps/api`.
-3. Long-running or async jobs are delegated to `apps/workers`.
-4. Shared formatting/types live in `packages/shared`.
+- **Web** calls the **API** via `NEXT_PUBLIC_API_BASE_URL`.
+- **API** serves synchronous endpoints and enqueues async work to **Redis/Celery**.
+- **Workers** consume tasks from Redis and execute background jobs.
+- **PostgreSQL** is the source of truth for canonical application data.
 
-## Quality gates
+## Why FastAPI
 
-- JavaScript/TypeScript: `lint`, `typecheck`, `test` across workspaces.
-- Python API: `ruff`, `mypy`, `pytest`.
-- CI runs these checks on every push and pull request.
+FastAPI was chosen for fast iteration, typed request/response contracts, and simple integration with Pydantic settings and Celery workers.
+
+## Guardrails Included
+
+- Request logging middleware with per-request `request_id`.
+- Header redaction for sensitive key names (`token`, `authorization`, `cookie`).
+- Environment-driven CORS behavior (development permissive, non-development restricted).
+- CI checks for lint, type-checking, and tests across web + python services.

@@ -2,22 +2,20 @@
 
 ## ADR-001: Monorepo structure
 
-**Decision:** Use a monorepo with `apps/*` for deployable services and `packages/*` for reusable code.
+- **Decision:** Keep deployable services under `apps/*` and shared artifacts under `packages/*`.
+- **Tradeoff:** Slightly more tooling setup now, but lower coordination overhead for cross-service work.
 
-**Rationale:**
-- Shared ownership and consistent tooling.
-- Easier refactoring across frontend, workers, and shared utilities.
-- Centralized CI quality checks.
+## ADR-002: Frontend stack
 
-## ADR-002: API framework choice
+- **Decision:** Next.js App Router + TypeScript + Tailwind + shadcn-style component primitives.
+- **Tradeoff:** Requires some UI boilerplate, but gives consistent component ergonomics and fast route scaffolding.
 
-**Decision:** Use **FastAPI** for `apps/api`.
+## ADR-003: Backend and workers
 
-**Rationale:**
-- Fast setup and strong productivity for small and medium services.
-- Native type hints and automatic OpenAPI generation.
-- Lightweight async-friendly model that integrates well with worker patterns.
-- Lower boilerplate compared with NestJS for this initial platform baseline.
+- **Decision:** FastAPI + Pydantic v2 for API, Celery + Redis for async jobs.
+- **Tradeoff:** Python runtime split between API and workers, but shared tooling (`ruff`, `pytest`, `mypy`) keeps maintenance simple.
 
-**Consequence:**
-- The backend uses Python-specific tooling (`ruff`, `mypy`, `pytest`) in addition to Node tooling for other apps.
+## ADR-004: Package management
+
+- **Decision:** Use `pnpm` for JS workspaces and `pip + requirements.txt` for Python apps.
+- **Tradeoff:** Two ecosystem toolchains, but avoids premature complexity from introducing uv/poetry in bootstrap.
