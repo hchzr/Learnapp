@@ -59,6 +59,7 @@ make test
 - API health: `curl http://localhost:8000/health`
 - API v1 health: `curl http://localhost:8000/v1/health`
 - API auth stub: `curl http://localhost:8000/v1/me`
+- API admin job enqueue: `curl -X POST http://localhost:8000/v1/admin/jobs/hello`
 
 ## Known limitations / next steps
 

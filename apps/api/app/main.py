@@ -1,11 +1,12 @@
 import logging
 import uuid
 
-from fastapi import Depends, FastAPI, Request
+from fastapi import Depends, FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.db import check_database_connectivity
+from app.jobs import enqueue_hello_world
 from app.logging_utils import RequestLoggerAdapter, sanitize_headers, setup_logging
 from app.settings import get_settings
 
@@ -65,3 +66,9 @@ async def me() -> JSONResponse:
         status_code=401,
         content={"error": "Authentication stub: endpoint not yet implemented."},
     )
+
+
+@app.post("/v1/admin/jobs/hello", status_code=status.HTTP_202_ACCEPTED)
+async def queue_hello_world_job() -> dict[str, str]:
+    task_id = enqueue_hello_world()
+    return {"status": "queued", "task_id": task_id}

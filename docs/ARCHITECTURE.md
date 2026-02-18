@@ -33,3 +33,12 @@ FastAPI was chosen for fast iteration, typed request/response contracts, and sim
 - Canonical schema includes `users`, `external_accounts`, and `audit_logs` managed through Alembic migrations.
 - `external_accounts` tokens are encrypted at rest via an application-level SQLAlchemy type backed by `ENCRYPTION_KEY`.
 - Health endpoints validate database connectivity via `SELECT 1` before returning `{"status": "ok"}`.
+
+
+## Background Jobs Framework (PR #5)
+
+- Celery is configured with Redis as broker/backend for both API producer and worker consumer.
+- Jobs use a registry pattern (`workers.jobs.job_registry`) so job types are centrally declared and discoverable.
+- `BaseJob` standardizes `run_id`, structured lifecycle logging (`job-start`, `job-failed`, `job-success`), and retry behavior.
+- Initial jobs include `hello_world` and `cleanup_old_jobs`.
+- API admin endpoint `POST /v1/admin/jobs/hello` enqueues `workers.hello_world` and returns `202 Accepted`.

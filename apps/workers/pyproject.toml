@@ -12,3 +12,8 @@ select = ["E", "F", "I"]
 python_version = "3.12"
 strict = true
 exclude = ["tests/"]
+
+
+[[tool.mypy.overrides]]
+module = ["celery", "celery.*"]
+ignore_missing_imports = true
