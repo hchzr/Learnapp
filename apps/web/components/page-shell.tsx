@@ -1,14 +1,28 @@
 import Link from "next/link";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Typography } from "@/components/ui/typography";
 
-export function PageShell({ title, description }: { title: string; description: string }) {
+export function PageShell({ title, description, home = false }: { title: string; description: string; home?: boolean }) {
   return (
     <Card className="max-w-2xl">
-      <h1 className="mb-2 text-2xl font-semibold">{title}</h1>
-      <p className="mb-4 text-slate-600 dark:text-slate-300">{description}</p>
-      <Link href="/" className="text-sm text-blue-600 underline">
-        Back to home
-      </Link>
+      <CardHeader className="page-stack">
+        <Typography as="h1" variant="h1">
+          {title}
+        </Typography>
+        <Typography variant="lead">{description}</Typography>
+      </CardHeader>
+      {!home && (
+        <CardContent>
+          <Link href="/" className="text-sm text-blue-600 underline underline-offset-2 dark:text-blue-400">
+            Back to home
+          </Link>
+        </CardContent>
+      )}
+      {home && (
+        <CardFooter>
+          <Typography variant="body">Use the sidebar to explore upcoming modules.</Typography>
+        </CardFooter>
+      )}
     </Card>
   );
 }

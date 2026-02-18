@@ -33,3 +33,10 @@ FastAPI was chosen for fast iteration, typed request/response contracts, and sim
 - Canonical schema includes `users`, `external_accounts`, and `audit_logs` managed through Alembic migrations.
 - `external_accounts` tokens are encrypted at rest via an application-level SQLAlchemy type backed by `ENCRYPTION_KEY`.
 - Health endpoints validate database connectivity via `SELECT 1` before returning `{"status": "ok"}`.
+
+## UI System Foundation (PR #9)
+
+- Web app now has a shadcn/ui configuration (`apps/web/components.json`) to standardize component generation and aliases.
+- Shared UI primitives include structured cards (`CardHeader/Content/Footer`), typography variants, loading skeletons, and an error alert component.
+- Next.js global `app/loading.tsx` and `app/error.tsx` route handlers consume those shared primitives so loading/error states are consistent across pages.
+- Route pages render through `PageShell`, ensuring common spacing and typography across the app shell.

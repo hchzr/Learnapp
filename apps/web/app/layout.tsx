@@ -16,7 +16,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <ThemeProvider>
           <div className="flex min-h-screen">
             <Sidebar />
-            <main className="flex-1 p-6">
+            <main className="flex-1">
               <div className="mb-6 flex justify-end">
                 <DarkModeToggle />
               </div>

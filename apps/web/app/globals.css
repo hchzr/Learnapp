@@ -3,6 +3,13 @@
 :root {
   --background: #ffffff;
   --foreground: #111827;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
 }
 
 .dark {
@@ -13,4 +20,15 @@
 body {
   background-color: var(--background);
   color: var(--foreground);
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+main {
+  padding: var(--space-6);
+}
+
+.page-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
