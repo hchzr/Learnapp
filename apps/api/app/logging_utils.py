@@ -22,7 +22,9 @@ def sanitize_headers(headers: Mapping[str, str]) -> dict[str, str]:
 def setup_logging() -> None:
     handler = logging.StreamHandler()
     handler.setFormatter(
-        RedactingFormatter("%(asctime)s %(levelname)s %(name)s request_id=%(request_id)s %(message)s")
+        RedactingFormatter(
+            "%(asctime)s %(levelname)s %(name)s request_id=%(request_id)s %(message)s"
+        )
     )
     root = logging.getLogger()
     root.setLevel(logging.INFO)

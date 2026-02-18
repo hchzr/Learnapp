@@ -36,7 +36,21 @@ pip install -r apps/workers/requirements.txt
 cd apps/workers && python -m workers.cli
 ```
 
-## 5) Common troubleshooting
+## 5) Database migrations
+
+```bash
+source .venv/bin/activate
+cd apps/api && alembic upgrade head
+```
+
+## 6) API persistence tests
+
+```bash
+source .venv/bin/activate
+cd apps/api && pytest tests/test_db_persistence.py
+```
+
+## 7) Common troubleshooting
 
 - **Port already in use:** stop conflicting process or change port.
 - **Redis connection errors:** ensure `docker compose ps` reports redis healthy.
