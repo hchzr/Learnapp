@@ -2,6 +2,17 @@
 
 This document will track scopes, sync cadence, and data mapping rules.
 
+## Runtime gating
+
+Integrations are now gated by feature flags in `feature_flags`:
+
+- `notion_sync`
+- `todoist_sync`
+- `drive_ingestion`
+- `anki`
+
+When a flag is disabled, the frontend hides related integration UI.
+
 ## Notion
 - OAuth scopes: TBD
 - Sync direction: TBD

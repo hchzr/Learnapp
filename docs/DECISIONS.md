@@ -26,3 +26,10 @@
 - **Decision:** Establish PostgreSQL + Alembic as the canonical persistence layer with SQLAlchemy async sessions.
 - **Decision:** Store external provider tokens encrypted at rest using a shared `ENCRYPTION_KEY`-derived Fernet key.
 - **Tradeoff:** App-level encryption keeps implementation simple and portable, but key rotation will require a migration plan.
+
+
+## ADR-006: Feature flags for incomplete modules
+
+- **Decision:** Introduce DB-backed feature flags and API toggles so incomplete product modules can be disabled per environment.
+- **Decision:** Keep disabled-state defaults as `false` for all controlled modules to bias toward safe rollout.
+- **Tradeoff:** Adds one API + DB integration path for UI rendering, but gives operational control without redeploying frontend routes.
