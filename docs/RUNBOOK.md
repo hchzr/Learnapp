@@ -55,3 +55,12 @@ cd apps/api && pytest tests/test_db_persistence.py
 - **Port already in use:** stop conflicting process or change port.
 - **Redis connection errors:** ensure `docker compose ps` reports redis healthy.
 - **DB migration checks:** `cd apps/api && alembic upgrade head`.
+
+
+## 8) Trigger a background job
+
+```bash
+curl -X POST http://localhost:8000/v1/admin/jobs/hello
+```
+
+Expected response: `{"status":"queued","task_id":"..."}` and the worker logs a successful `workers.hello_world` execution.
