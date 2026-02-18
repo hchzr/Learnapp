@@ -26,3 +26,10 @@
 - **Decision:** Establish PostgreSQL + Alembic as the canonical persistence layer with SQLAlchemy async sessions.
 - **Decision:** Store external provider tokens encrypted at rest using a shared `ENCRYPTION_KEY`-derived Fernet key.
 - **Tradeoff:** App-level encryption keeps implementation simple and portable, but key rotation will require a migration plan.
+
+## ADR-006: Signed cookie sessions for initial authentication
+
+- **Decision:** Implement initial auth with email login and signed session cookies instead of OAuth/password flows.
+- **Decision:** Make session cookies `HttpOnly` and environment-aware (`Secure` in production only).
+- **Decision:** Centralize user extraction in a reusable `get_current_user` dependency.
+- **Tradeoff:** Faster MVP delivery and fewer moving parts today, but no email verification or third-party identity guarantees yet.
