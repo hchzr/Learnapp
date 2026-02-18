@@ -65,3 +65,15 @@ async def me() -> JSONResponse:
         status_code=401,
         content={"error": "Authentication stub: endpoint not yet implemented."},
     )
+
+
+@app.get("/v1/integrations/status")
+async def integrations_status() -> dict[str, list[dict[str, str | bool]]]:
+    providers: list[dict[str, str | bool]] = [
+        {"provider": "notion", "connected": False},
+        {"provider": "todoist", "connected": False},
+        {"provider": "google_drive", "connected": False},
+        {"provider": "habitica", "connected": False},
+        {"provider": "anki", "connected": False},
+    ]
+    return {"providers": providers}
