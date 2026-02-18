@@ -26,3 +26,10 @@ FastAPI was chosen for fast iteration, typed request/response contracts, and sim
 - Header redaction for sensitive key names (`token`, `authorization`, `cookie`).
 - Environment-driven CORS behavior (development permissive, non-development restricted).
 - CI checks for lint, type-checking, and tests across web + python services.
+
+## Persistence Layer (PR #2)
+
+- API now uses SQLAlchemy 2.0 async engine/session (`AsyncSession`) with request-scoped dependency injection.
+- Canonical schema includes `users`, `external_accounts`, and `audit_logs` managed through Alembic migrations.
+- `external_accounts` tokens are encrypted at rest via an application-level SQLAlchemy type backed by `ENCRYPTION_KEY`.
+- Health endpoints validate database connectivity via `SELECT 1` before returning `{"status": "ok"}`.

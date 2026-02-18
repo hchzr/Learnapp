@@ -1,10 +1,11 @@
 import logging
 import uuid
 
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from app.db import check_database_connectivity
 from app.logging_utils import RequestLoggerAdapter, sanitize_headers, setup_logging
 from app.settings import get_settings
 
@@ -49,15 +50,18 @@ async def request_logging_middleware(request: Request, call_next):
 
 
 @app.get("/health")
-async def health() -> dict[str, str]:
+async def health(_: None = Depends(check_database_connectivity)) -> dict[str, str]:
     return {"status": "ok"}
 
 
 @app.get("/v1/health")
-async def v1_health() -> dict[str, str]:
+async def v1_health(_: None = Depends(check_database_connectivity)) -> dict[str, str]:
     return {"status": "ok"}
 
 
 @app.get("/v1/me")
 async def me() -> JSONResponse:
-    return JSONResponse(status_code=401, content={"error": "Authentication stub: endpoint not yet implemented."})
+    return JSONResponse(
+        status_code=401,
+        content={"error": "Authentication stub: endpoint not yet implemented."},
+    )

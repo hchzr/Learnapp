@@ -19,3 +19,10 @@
 
 - **Decision:** Use `pnpm` for JS workspaces and `pip + requirements.txt` for Python apps.
 - **Tradeoff:** Two ecosystem toolchains, but avoids premature complexity from introducing uv/poetry in bootstrap.
+
+
+## ADR-005: Database baseline and encrypted provider credentials
+
+- **Decision:** Establish PostgreSQL + Alembic as the canonical persistence layer with SQLAlchemy async sessions.
+- **Decision:** Store external provider tokens encrypted at rest using a shared `ENCRYPTION_KEY`-derived Fernet key.
+- **Tradeoff:** App-level encryption keeps implementation simple and portable, but key rotation will require a migration plan.
