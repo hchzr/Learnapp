@@ -1,24 +1,20 @@
 {
-  "name": "learnapp-monorepo",
+  "name": "life-learn",
   "private": true,
   "version": "0.1.0",
-  "workspaces": [
-    "apps/web",
-    "apps/workers",
-    "packages/shared"
-  ],
+  "packageManager": "pnpm@9.15.0",
   "scripts": {
-    "lint": "npm run lint -ws --if-present",
-    "typecheck": "npm run typecheck -ws --if-present",
-    "test": "npm run test -ws --if-present"
+    "dev": "pnpm --filter @life-learn/web dev",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
-    "@typescript-eslint/eslint-plugin": "^8.16.0",
-    "@typescript-eslint/parser": "^8.16.0",
-    "eslint": "^9.16.0",
-    "eslint-config-next": "^15.1.0",
-    "typescript": "^5.7.2",
-    "vitest": "^2.1.8"
+    "@types/node": "^22.13.0",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "eslint": "^9.20.1",
+    "prettier": "^3.5.1",
+    "typescript": "^5.7.3"
   }
 }

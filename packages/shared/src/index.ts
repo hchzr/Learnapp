@@ -1,5 +1,12 @@
-export function formatServiceName(service: string): string {
-  const normalized = service.trim();
-  const capitalized = normalized.charAt(0).toUpperCase() + normalized.slice(1);
-  return `Learnapp ${capitalized}`;
-}
+export type ApiError = {
+  error: {
+    code: string;
+    message: string;
+    details?: Record<string, unknown>;
+  };
+  requestId?: string;
+};
+
+export type HealthResponse = {
+  status: "ok";
+};

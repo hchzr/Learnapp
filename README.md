@@ -1,29 +1,67 @@
-# Learnapp Monorepo
+# life-learn monorepo bootstrap
 
-## Structure
+This repository contains the initial skeleton for web, API, and worker services with quality guardrails and CI.
 
-- `apps/web` – Next.js TypeScript web app
-- `apps/api` – FastAPI backend
-- `apps/workers` – TypeScript workers
-- `packages/shared` – shared TypeScript package
-- `docs/` – architecture and decision records
+## Repository structure
 
-## Quickstart
+- `apps/web` — Next.js App Router UI shell with sidebar routes and dark mode toggle.
+- `apps/api` — FastAPI skeleton with health endpoints, request-id logging middleware, redaction, and Alembic scaffold.
+- `apps/workers` — Celery worker skeleton with `hello_world` example job.
+- `packages/shared` — reusable TypeScript API contract types.
+- `packages/prompts` — placeholder prompt versioning package.
+- `docs` — architecture, decisions, integrations, runbook, acceptance docs.
+- `infra/docker` — infrastructure scaffolding location.
+
+## Prerequisites
+
+- Node.js 22+
+- pnpm 9+
+- Python 3.12+
+- Docker + Docker Compose
+
+## Setup
 
 ```bash
-npm install
+pnpm install
 python -m venv .venv
 source .venv/bin/activate
 pip install -r apps/api/requirements.txt
+pip install -r apps/workers/requirements.txt
+cp .env.example .env
 ```
 
-## Checks
+## Local development
+
+Start infrastructure:
 
 ```bash
-npm run lint
-npm run typecheck
-npm run test
-ruff check apps/api
-mypy apps/api/app
-pytest apps/api/tests
+docker compose up -d
 ```
+
+Run services (separate terminals):
+
+```bash
+make dev-web
+make dev-api
+make dev-workers
+```
+
+## Quality commands
+
+```bash
+make lint
+make typecheck
+make test
+```
+
+## Service checks
+
+- API health: `curl http://localhost:8000/health`
+- API v1 health: `curl http://localhost:8000/v1/health`
+- API auth stub: `curl http://localhost:8000/v1/me`
+
+## Known limitations / next steps
+
+- No OAuth integrations yet.
+- No business data models/tables yet (Alembic migration is a no-op scaffold).
+- Playwright smoke test is scaffolded but not wired into CI yet.
